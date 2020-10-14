@@ -14,100 +14,52 @@ function task1 (array $arr, $bool = false)
     }
 }
 
-function task2 (string $sign)
-{
-    $pre = 'Результат: ';
-    $arr = [];
-    $counter = '';
-    if($sign == '+') {
-        for ($i = 1; $i < func_num_args(); $i++) {
-            $arr[$i] = func_get_arg($i);
-            $counter += $arr[$i];
-        }
-        $string = implode(' + ', $arr);
-        $final = $pre . $string . ' = ' . $counter;
-    }
-    elseif ($sign == '-') {
-        for ($i = 1; $i < func_num_args(); $i++) {
-            $arr[$i] = func_get_arg($i);
-            if($counter != $arr[$i]) {
-                $counter -= $arr[$i];
-            }
-        }
-        $string = implode(' - ', $arr);
-        $final = $pre . $string . ' = ' . $counter;
-    } elseif ($sign == '/') {
-        for ($i = 1; $i < func_num_args(); $i++) {
-            $arr[$i] = func_get_arg($i);
-            $counter /= $arr[$i];
-        }
-        $string = implode(' / ', $arr);
-        $final = $pre . $string . ' = ' . $counter;
-    } elseif ($sign == '*') {
-        for ($i = 1; $i < func_num_args(); $i++) {
-            $arr[$i] = func_get_arg($i);
-            $counter *= $arr[$i];
-        }
-        $string = implode(' * ', $arr);
-        $final = $pre . $string . ' = ' . $counter;
-    } else {
-        $final = 'Такого математического знака не существует';
-    }
-    echo $final . '<br>';
-}
+// Задание 2
 
-//function task2($operator) {
-//    $res = '';
-//    $arr = [];
-//    for ($i = 0; $i < func_num_args() - 1; $i++) {
-//        $arr[$i] = func_get_arg($i+1);
-//        var_dump(func_get_arg($i+1));
-//    }
-//    for ($i = 0; $i < count($arr); $i++)
-//    {
-//        if (!is_int($arr[$i])) {
-//            echo '<h1 style="color:darkred;">ВНИМАНИЕ!</h1>Задание 2,- в массиве не число!';
-//            exit;
-//        }
-//        switch ($operator) {
-//            case '+':
-//                for ($i = 0; $i < count($arr); $i++) {
-//                    $res += $arr[$i];
-//                }
-//                return $res;
-//                break;
-//            case '-': for ($i = 0; $i < count($arr); $i++) {
-//                $res -= $arr[$i];
-//            }
-//                return $res;
-//                break;
-//            case '*':
-//                for ($i = 0; $i < count($arr); $i++) {
-//                    if ($res != '') {
-//                        $res *= $arr[$i];
-//                    } elseif ($res == '') {
-//                        $res = $arr[$i];
-//                    }
-//                }
-//                return $res;
-//                break;
-//            case '/':
-//                for ($i = 0; $i < count($arr); $i++) {
-//                    if ($arr[$i] == 0) {
-//                        echo 'На нуль делить нельзя';
-//                        exit;
-//                    }
-//                    if ($res != '') {
-//                        $res /= $arr[$i];
-//                    } elseif ($res == '') {
-//                        $res = $arr[$i];
-//                    }
-//                } return $res;
-//                break;
-//            default: echo 'Неизвестные данные';
-//        }
-//    }
-//}
+function task2($operator)
+{
+    $args = func_get_args();
+    $result = 'Результат: ';
+    $counter = 0;
+    $string = '';
+    if ($operator == '+') {
+        for ($i = 1; $i < sizeof($args); $i++) {
+            $counter += $args[$i];
+        }
+        $nums = array_shift($args);
+        $string = implode(' + ', $args);
+    } elseif ($operator == '-') {
+        $counter = 0;
+        for ($i = 1; $i <= 1; $i++) {
+            $counter += $args[$i];
+        }
+        for($j = 2; $j < sizeof($args); $j++) {
+            $counter -= $args[$j];
+        }
+        $nums = array_shift($args);
+        $string = implode(' - ', $args);
+    } elseif ($operator == '*') {
+        $counter = 1;
+        for ($i = 1; $i < sizeof($args); $i++) {
+            $counter *= $args[$i];
+        }
+        $nums = array_shift($args);
+        $string = implode(' * ', $args);
+    } elseif ($operator == '/') {
+        $counter = 0;
+        for ($i = 1; $i <= 1; $i++) {
+            $counter += $args[$i];
+        }
+        for($j = 2; $j < sizeof($args); $j++) {
+            $counter /= $args[$j];
+        }
+        $nums = array_shift($args);
+        $string = implode(' / ', $args);
+    } else {
+        echo 'Неизвестные данные';
+    }
+    return $result . $string . ' = ' . $counter;
+}
 
 function task3 (int $arg1, int $arg2)
 {

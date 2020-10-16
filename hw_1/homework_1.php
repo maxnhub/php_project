@@ -68,32 +68,22 @@ print_r('<br>');
 Выведите фразу “Неизвестный день”, если значение переменной '$day' не попадает в диапазон чисел от 1 до 7 (включительно)
 */
 
-$day = mt_rand(0, 7);
+$day = mt_rand(1, 7);
 print_r('day = ' . $day . '<br>');
 switch ($day) {
     case 1:
-        print_r('Это рабочий день' . '<br>');
-        break;
     case 2:
-        print_r('Это рабочий день' . '<br>');
-        break;
     case 3:
-        print_r('Это рабочий день' . '<br>');
-        break;
     case 4:
-        print_r('Это рабочий день' . '<br>');
-        break;
     case 5:
         print_r('Это рабочий день' . '<br>');
         break;
     case 6:
-        print_r('Это выходной день' . '<br>');
-        break;
     case 7:
         print_r('Это выходной день' . '<br>');
         break;
     default:
-        print_r('Неизвестный день' . '<br>');
+        print_r('День, когда мы все выспимся' . '<br>');
         break;
 }
 print_r('<br>');
@@ -141,11 +131,11 @@ $bigarr = [
     'opel' => $opel
 ];
 
-foreach ($bigarr as $k => $v) {
+foreach ($bigarr as $key => $value) {
     echo '<br>';
-    echo 'CAR ' . $k . '<br>';
-    foreach ($v as $v2) {
-        echo $v2 . ' ';
+    echo 'CAR ' . $key . '<br>';
+    foreach ($value as $value2) {
+        echo $value2 . ' ';
     }
     echo '<br>';
 }

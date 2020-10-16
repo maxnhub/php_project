@@ -14,8 +14,7 @@ function task1 (array $arr, $bool = false)
             echo '<p style="margin: 0;">' . $arr[$i] . '</p><br>';
         }
     } else {
-        $string = implode(' ', $arr);
-        return $string;
+        return implode(' ', $arr);
     }
 }
 

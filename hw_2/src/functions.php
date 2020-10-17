@@ -80,8 +80,10 @@ function task2($operator)
 
 function task3 (int $arg1, int $arg2)
 {
-    $arg1 = abs($arg1);
-    $arg2 = abs($arg2);
+    if ($arg1 < 1 || $arg2 < 1) {
+        echo 'Введите целые числа';
+        return null;
+    }
     echo '<table border="1">';
     for($i=1; $i<=$arg1; $i++) {
         echo '<br>';

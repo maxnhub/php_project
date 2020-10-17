@@ -84,7 +84,6 @@ switch ($day) {
         break;
     default:
         print_r('День, когда мы все выспимся' . '<br>');
-        break;
 }
 print_r('<br>');
 

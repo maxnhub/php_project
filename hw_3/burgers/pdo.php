@@ -1,15 +1,19 @@
 <?php
+
 try {
-    $pdo = new PDO("mysql:host=localhost;dbname=test_posts", 'root', 'root');
+    $pdo = new PDO("mysql:host=localhost;dbname=test", 'root', 'root');
 } catch (PDOException $e) {
     echo $e->getMessage();
     die;
 }
 
+echo $pdo->prepare('SELECT * FROM test_users')->execute();
+die;
+
 // ** получение пользователя по id
 $id = $_GET['id'] ?? 0;
 if($id) {
-    $ret = $pdo->query("SELECT * FROM test_users WHERE id=$id");
+    $ret = $pdo->query("SELECT * FROM `test_users` WHERE id=$id");
 
     if(!$ret) { //проверяем на успешность
         echo 'ERROR:';
@@ -19,8 +23,9 @@ if($id) {
     $user = $ret->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// ** получение пользователя по имени
-$id = $_GET['name'] ?? '';
+
+// ** получение пользователя по почте
+$id = $_GET['email'] ?? '';
 
 if(!empty($_REQUEST['ajax'])) {
     header('Content-type: application/json');

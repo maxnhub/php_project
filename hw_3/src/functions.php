@@ -1,6 +1,6 @@
 <?php
 
-/*  Задание 1
+/*  Задание 3.1
     Программно создайте массив из 50 пользователей, у каждого пользователя есть поля id, name и age:
     id - уникальный идентификатор, равен номеру эл-та в массиве
     name - случайное имя из 5-ти возможных (сами придумайте каких)
@@ -58,22 +58,8 @@ function task1()
     echo 'Middle age of users ' . $usersMiddleAge/count($users);
 }
 
-/*  Задание 2
-    Проверить, существует ли уже пользователь с таким email, если нет - создать его, если да - увеличить число заказов по этому email. Двух пользователей с одинаковым email быть не может.
-    Сохранить данные заказа - id пользователя, сделавшего заказ, дату заказа, полный адрес клиента.
-    Скрипт должен вывести пользователю:
-    Спасибо, ваш заказ будет доставлен по адресу: “тут адрес клиента”
-    Номер вашего заказа: #ID
-    Это ваш n-й заказ!
-    Где ID - уникальный идентификатор только что созданного заказа n - общий кол-во заказов, который сделал пользователь с этим email включая текущий
-*/
 
-//function task2()
-//{
-//
-//}
-
-/*  Задание 3
+/*  Задание 4
     Представьте, что вы создаете сайт для компании сдающих автомобили поминутно (каршеринг). У компании есть ряд тарифов. Вам необходимо реализовать каждый тариф в своем классе. У каждого тарифа две основные характеристики - цена за 1 км, цена за 1 минуту. Каждый тариф обязан иметь метод для подсчета цены поездки. В некоторых тарифах возможно использование дополнительных услуг. Ваша задача - посчитать цену, которую получит пользователь, если проедет Х км и Y минут по тарифу Z.
 
     Тариф базовый
@@ -125,28 +111,35 @@ trait Gps
     }
 }
 
-abstract class Tarif
+trait Driver
+{
+    protected $statusDriver = false;
+
+    public function onDriver()
+    {
+        $this->statusDriver = true;
+    }
+    public function offDriver()
+    {
+        $this->statusDriver = false;
+    }
+    public function getDriver()
+    {
+        return $this->statusDriver;
+    }
+}
+
+abstract class Rate
 {
     use Gps;
+    use Driver;
 
-    public $name = '';
-    public $oneKmPrice = 0;
-    public $distance = 0;
-    private $oneMinutePrice = 0;
-    public $time = 0;
-    public $priceForDistance = 0;
-    public $priceForTime = 0;
-    public $gps = false;
-    public $driver = false;
     private $oneHourForGps = 15;
     private $priceForGps = 0;
-    private $priceForDriver = 0;
+    protected $priceForDriver = 0;
     private $gpsDesc = '';
     private $gpsTime = 0;
-    private $driverDesc = '';
     private $hourTime = 0;
-    private $hourTimeDesc = '';
-    private $finalPrice = 0;
 
     /**
      * @param int $oneMinutePrice
@@ -155,100 +148,130 @@ abstract class Tarif
     {
         $this->oneMinutePrice = $oneMinutePrice;
     }
-    // если необходимо обращаться к этим переменным глубже, чем мы их объявили, делаем сеттеры и геттеры
+
+    /**
+     * @return int
+     */
+    public function getPriceForDriver(): int
+    {
+        return $this->priceForDriver;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriceForGps(): int
+    {
+        return $this->priceForGps;
+    }
+
 
     public function __construct($rideDistance, $rideTime, $extraGps = false, $extraDriver = false)
     {
         $this->distance = $rideDistance;
         $this->time = $rideTime;
-        $this->gps = $extraGps;
         if($extraGps) {
             $this->onGps();
         }
-        // здесь я задаю Gps true;
-
-
-        $this->driver = $extraDriver;
+        if($extraDriver) {
+            $this->onGps();
+        }
     }
 
     public function getInfo()
     {
-        $this->priceForDistance = $this->oneKmPrice * $this->distance;
-        $this->priceForTime = $this->oneMinutePrice * $this->time;
+
         if($this->statusGps) {
             $this->priceForGps = $this->oneHourForGps * ceil($this->time / 60);
-        } //можно обратиться к statusGps
-
-
-        if($this->driver) {
+        }
+        if($this->statusDriver) {
             $this->priceForDriver = 100;
         }
 
-        if($this->name == 'Тариф Почасовой') {
-            $this->hourTime = ceil($this->time / 60);
-            $this->hourTimeDesc = $this->hourTime . ' час(а) * ' . $this->oneMinutePrice . ' руб / час';
-            $this->priceForTime = $this->hourTime * $this->oneMinutePrice;
-        }
-        echo $this->name . '(' . $this->distance . 'км, ' . $this->time . ' мин)' . '<br>';
-        if($this->gps) {
-            echo ' - добавить услугу GPS' . '<br>';
-            $this->gpsTime = ceil($this->time / 60);
-            $this->gpsDesc = ' + 15 руб / час * ' . $this->gpsTime . ' час(а)';
-        }
-        if($this->driver) {
-            echo ' - добавить услугу водителя' . '<br>';
-            $this->driverDesc = ' + 100 руб';
-        }
-
-        // там где объявляем, там текст, вынести всё наружу
-        $this->finalPrice = $this->priceForDistance + $this->priceForTime + $this->priceForGps + $this->priceForDriver;
-        echo '= ' . $this->distance . 'км * ' . $this->oneKmPrice . ' руб / км + ' . ($this->name == 'Тариф Почасовой' ? $this->hourTimeDesc : $this->time . ' мин * ' . $this->oneMinutePrice . ' руб / мин') . $this->gpsDesc . $this->driverDesc . ' = ' . $this->priceForDistance . ' + ' . $this->priceForTime . ($this->priceForGps ? ' + ' . $this->priceForGps : '') . ($this->priceForDriver ? ' + ' . $this->priceForDriver : '') . ' = ' . $this->finalPrice;
-        echo '<br>';
+//        if($this->gps) {
+//            echo ' - добавить услугу GPS' . '<br>';
+//            $this->gpsTime = ceil($this->time / 60);
+//            $this->gpsDesc = ' + 15 руб / час * ' . $this->gpsTime . ' час(а)';
+//        }
+//        if($this->driver) {
+//            echo ' - добавить услугу водителя' . '<br>';
+//            $this->driverDesc = ' + 100 руб';
+//        }
     }
+
 
 }
 
 
 
-class BasicTarif extends Tarif implements CalculateInterface
+class BasicRate extends Rate implements CalculateInterface
 {
-    public function getTotalPrice()
-    {
-        // TODO: Implement getTotalPrice() method.
-        // здесь возвращаем итоговое число по данному тарифу
-    }
-
-    public $name = 'Тариф Базовый';
+    const BASIC_RATE_NAME = 'Тариф Базовый';
+    public $distance = 0;
+    public $time = 0;
+    public $priceForDistance = 0;
+    public $priceForTime = 0;
     public $oneKmPrice = 10;
     public $oneMinutePrice = 3;
+
+    public function getTotalPrice()
+    {
+        $this->priceForDistance = $this->oneKmPrice * $this->distance;
+        $this->priceForTime = $this->oneMinutePrice * $this->time;
+        return $result = $this->priceForDistance + $this->priceForTime + $this->getPriceForDriver() + $this->getPriceForGps();
+    }
 }
 
-class HourTarif extends Tarif
+class HourRate extends Rate implements CalculateInterface
 {
-    public $name = 'Тариф Почасовой';
-    public $oneKmPrice = 0;
+    const HOUR_RATE_NAME = 'Тариф Почасовой';
     public $oneMinutePrice = 200;
+    public $time = 0;
+
+    public function getTotalPrice()
+    {
+        $hourTime = ceil($this->time / 60);
+//        $hourTimeDesc = $hourTime . ' час(а) * ' . $this->oneMinutePrice . ' руб / час';
+        $priceForTime = $hourTime * $this->oneMinutePrice;
+        return $result = $priceForTime + $this->getPriceForDriver() + $this->getPriceForGps();
+    }
 }
 
-class StudentTarif extends Tarif
+class StudentRate extends Rate implements CalculateInterface
 {
-    public $name = 'Тариф Студенческий';
+    const HOUR_RATE_NAME = 'Тариф Студенческий';
+    public $distance = 0;
+    public $time = 0;
+    public $priceForDistance = 0;
+    public $priceForTime = 0;
     public $oneKmPrice = 4;
     public $oneMinutePrice = 1;
+
+    public function getTotalPrice()
+    {
+        $this->priceForDistance = $this->oneKmPrice * $this->distance;
+        $this->priceForTime = $this->oneMinutePrice * $this->time;
+        return $result = $this->priceForDistance + $this->priceForTime + $this->getPriceForDriver() + $this->getPriceForGps();
+    }
 }
 
-$gordon = new BasicTarif(12,70, true, false);
-$gordon->getInfo();
+$gordon = new BasicRate(12,70, true, false);
+var_dump($gordon->getTotalPrice());
 echo '<br>';
 
-$alyx = new HourTarif(78,45, false, false);
-$alyx->getInfo();
+$alyx = new HourRate(78,45, false, true);
+var_dump($alyx->getTotalPrice());
 echo '<br>';
 
-$eli = new StudentTarif(89,21, false, true);
-$eli->getInfo();
+$eli = new StudentRate(89,21, false, true);
+var_dump($eli->getTotalPrice());
 echo '<br>';
 
+// echo $this->name . '(' . $this->distance . 'км, ' . $this->time . ' мин)' . '<br>';
+// там где объявляем, там текст, вынести всё наружу
+//$this->finalPrice = $this->priceForDistance + $this->priceForTime + $this->priceForGps + $this->priceForDriver;
+//echo '= ' . $this->distance . 'км * ' . $this->oneKmPrice . ' руб / км + ' . ($this->name == 'Тариф Почасовой' ? $this->hourTimeDesc : $this->time . ' мин * ' . $this->oneMinutePrice . ' руб / мин') . $this->gpsDesc . $this->driverDesc . ' = ' . $this->priceForDistance . ' + ' . $this->priceForTime . ($this->priceForGps ? ' + ' . $this->priceForGps : '') . ($this->priceForDriver ? ' + ' . $this->priceForDriver : '') . ' = ' . $this->finalPrice;
+//echo '<br>';
 
 //function task3()
 //{

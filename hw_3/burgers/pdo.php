@@ -17,9 +17,6 @@ try {
     die;
 }
 
-echo $pdo->prepare('SELECT * FROM test_users')->execute();
-die;
-
 // ** получение пользователя по id
 $id = $_GET['id'] ?? 0;
 if($id) {

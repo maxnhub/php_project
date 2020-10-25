@@ -39,18 +39,18 @@ Gps в салон - 15 рублей в час, минимум 1 час. Окру
 /** @var RateInterface $rate */
 $rate = new RateBasic(5, 10);
 $rate->addService($service = new ServiceGPS(15));
-echo $rate->name . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
+echo $rate->getName() . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
 echo $rate->countPrice();
 echo '<br>';
 
 $rate = new RateHour(31, 78);
 $rate->addService(new ServiceDriver(100));
-echo $rate->name . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
+echo $rate->getName() . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
 echo $rate->countPrice();
 echo '<br>';
 
 $rate = new RateStudent(5, 10);
 $rate->addService(new ServiceGPS(15));
-echo $rate->name . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
+echo $rate->getName() . '(' . $rate->getDistance() . 'км, ' . $rate->getMinutes() . 'мин)' . '<br>';
 echo $rate->countPrice();
 echo '<br>';

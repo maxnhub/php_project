@@ -6,5 +6,12 @@ class RateBasic extends RateAbstract
 {
     protected $pricePerKilometer = 10;
     protected $pricePerMinute = 3;
-    public $name = BASIC_RATE_NAME;
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return BASIC_RATE_NAME;
+    }
 }

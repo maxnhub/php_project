@@ -5,7 +5,6 @@ abstract class RateAbstract implements RateInterface
     protected $pricePerMinute;
     protected $distance;
     protected $minutes;
-    protected $name;
     /** @var ServiceInterface[] */
     protected $services = [];
 
@@ -44,8 +43,6 @@ abstract class RateAbstract implements RateInterface
         return $this->distance;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+    abstract public function getName();
+
 }

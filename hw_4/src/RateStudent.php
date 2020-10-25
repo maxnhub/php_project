@@ -6,5 +6,11 @@ class RateStudent extends RateAbstract
 {
     protected $pricePerKilometer = 4;
     protected $pricePerMinute = 1;
-    public $name = STUDENT_RATE_NAME;
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return STUDENT_RATE_NAME;
+    }
 }

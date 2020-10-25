@@ -12,6 +12,12 @@ class RateHour extends RateAbstract
         parent::__construct($distance, $minutes);
         $this->minutes = $this->minutes - $this->minutes % 60 + 60;
     }
-    public $name = HOUR_RATE_NAME;
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return HOUR_RATE_NAME;
+    }
 }
 
